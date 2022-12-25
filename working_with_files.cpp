@@ -30,7 +30,8 @@ int main()
         if(res != 0){
             http.output << strerror(errno)<<" ";
             http.output <<res<<" filename:"<<val.filename<<" size:" << (val.size) << "</br>";
-            // unlink(val.tmp_name.c_str());
+            //удаление временного файла
+            unlink(val.tmp_name.c_str());
         }else{
             http.output <<res<<" filename:"<<val.filename<<" size:" << (val.size) <<" OK" << "</br>";
         }

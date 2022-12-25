@@ -2,20 +2,23 @@
 #define __HTTP_HPP_CLASS__
 #include "header.h"
 #include <map>
+
+typedef struct {
+		std::string filename; 	// реальное имя файла
+		std::string mimetype;	// MIME-тип файла
+		std::string tmp_name; // временное имя файла
+		int error; 	// код ошибки (0, если нет)
+		int size; 	// размер загружаемого файла
+	} UploadedFile;
+
+
 class HTTP
 {
     public:
 
 	std::stringstream output;
 
-	typedef struct {
-		std::string filename; 	// реальное имя файла
-		std::string type;	// MIME-тип файла
-		std::string tmp_name; // временное имя файла
-		int error; 	// код ошибки (0, если нет)
-		int size; 	// размер загружаемого файла
-	} UploadedFile;
-
+	
     std::map<std::string, std::string> getparams;
     std::map<std::string, std::string> postparams;
     std::map<std::string, std::string> cookie;
@@ -43,13 +46,13 @@ class HTTP
 	std::string httpPost(std::string name);
 	std::string getCookie(std::string name);
 	std::string setCookie(std::string name, std::string value);
-	// Преобразование "application/x-www-form-urlencoded" to utf-8 string
+	// Декодирование "application/x-www-form-urlencoded" в нормальный вид
 	std::string rawURLDecode(std::string str);
-	// Возвращание значения HTTP-заголовка “name”
+	// Доступ к HTTP-заголовков запроса
 	std::string getHeader(std::string name);
-	// Возвращание свойства файла “name”
+	// Возвращание сруктуры свойства файла загруженного файла (name)
 	UploadedFile getFile(std::string name); 
-	// Загрузка файл “tmpFile” в директорию “path”
+	// Перемещение загруженного файла tmpFile в директорию path
 	int move_uploaded_file(UploadedFile tmpFile, std::string path); 
     
 	private:

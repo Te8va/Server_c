@@ -12,7 +12,7 @@
 #include <cstdlib>
 #define MAX_FILESIZE 20480 
 // удаление первого пробела
-std::string & leftTrim(std::string * str)
+std::string leftTrim(std::string * str)
 {
   if (*((*str).begin()) == ' '){
   (*str).erase((*str).begin());
@@ -30,6 +30,7 @@ std::string ReplaceAll(std::string str, const std::string& from, const std::stri
     }
     return str;
 }
+// защита от XSS
 std::string HTTP::replaceEscapeSymbols(std::string str)
 {
     // for()
@@ -122,24 +123,25 @@ stdin           --Asrf456BGe4h
                 */
             while (flag)
             {
+                std::string buffer;
                 std::string ContentType;
-                std::getline(std::cin, val); // TODO переименовать val
+                std::getline(std::cin, buffer); 
                 if(std::cin.eof()){
                     return;
                 }
                 long long int fs = 0;
                 // Если строка - это boundary
-                if (leftTrim(&val) == ("--" + boundary)){
-                    std::getline(std::cin, val, '\"');  // SKIP Content-Disposition: form-data; name="
+                if (leftTrim(&buffer) == ("--" + boundary)){
+                    std::getline(std::cin, buffer, '\"');  // SKIP Content-Disposition: form-data; name="
                     std::getline(std::cin, name, '\"');  // get name
-                    std::getline(std::cin, val, '\"');  // SKIP "; filename="
+                    std::getline(std::cin, buffer, '\"');  // SKIP "; filename="
                     std::getline(std::cin, filename, '\"');  // get filename
-                    std::getline(std::cin, val, '\n');  // skip '"\n'
-                    std::getline(std::cin, val, ' ');  // skip "Content-Type: "
+                    std::getline(std::cin, buffer, '\n');  // skip '"\n'
+                    std::getline(std::cin, buffer, ' ');  // skip "Content-Type: "
                     std::getline(std::cin, ContentType, '\n');  // get content type
-                    std::getline(std::cin, val, '\n');  // skip empty line
+                    std::getline(std::cin, buffer, '\n');  // skip empty line
 
-                    filesData[name].type = ContentType;
+                    filesData[name].mimetype = ContentType;
                     filesData[name].filename = filename;
                     filesData[name].size = 0;
                     filesData[name].error = 0;
@@ -149,18 +151,18 @@ stdin           --Asrf456BGe4h
                     }
                     
                     // Создание временного файла
-                    char tmpFileName[30];
-                    tmpnam(tmpFileName);
+                    char tmpFile[30];
+                    tmpnam(tmpFile);
                     
-                    ofile.open(tmpFileName);
-                    filesData[name].tmp_name = tmpFileName;
+                    ofile.open(tmpFile);
+                    filesData[name].tmp_name = tmpFile;
                 }else{
-                    if (leftTrim(&val) == ("--" + boundary + "--")){
+                    if (leftTrim(&buffer) == ("--" + boundary + "--")){
                         break;
                     }
                     
-                    ofile << val <<std::endl;
-                    filesData[name].size += val.size()+1;
+                    ofile << buffer <<std::endl;
+                    filesData[name].size += buffer.size()+1;
                     if (filesData[name].size > MAX_FILESIZE){
                         filesData[name].error = -1;
                         break;
@@ -184,7 +186,7 @@ stdin           --Asrf456BGe4h
     }
     return;
 }
-
+// Перемещение загруженного файла “tmpFile” в директорию “path”
 int HTTP::move_uploaded_file(UploadedFile tmpFile, std::string path){
     std::ifstream  src(tmpFile.tmp_name, std::ios::binary);
     std::ofstream  dst(path,   std::ios::binary);
@@ -215,7 +217,7 @@ int HTTP::httpSendFile(std::string name){
 HTTP::~HTTP(){
     return;
 }
-
+// Декодирование "application/x-www-form-urlencoded" в нормальный вид
 std::string HTTP::rawURLDecode(std::string str)
 {
   std::string res = "";
@@ -247,6 +249,15 @@ unsigned int HTTP::CharToHEX(char c){
 unsigned int HTTP::CharactersToInt(char c1, char c2){
     return ((CharToHEX(c1) << 4) + CharToHEX(c2));
 }
-
+//основные HTTP-заголовки запроса
+std::string HTTP::getHeader(std::string name)
+{
+    return getenv(name.c_str());
+}
+// Возвращание сруктуры свойства файла загруженного файла (name)
+UploadedFile HTTP::getFile(std::string name)
+{
+    return filesData[name];
+}
 
 #endif

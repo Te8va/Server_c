@@ -1,4 +1,3 @@
 /.vscode
-/db.cgi
-/uploadFile.cgi
+/*.cgi
 /usrfiles
