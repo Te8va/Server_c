@@ -30,7 +30,7 @@ int main()
     if(http.httpPost("delete") != ""){
             fs::path tpath = fs::path(http.httpPost("delete"));
             if (pathVector[http.rawURLDecode(tpath)] == 1){
-                http.output << "</br>File "<< http.rawURLDecode(tpath) <<" deleted</br>";
+                http.output << "</br>File "<< http.rawURLDecode(tpath) <<"delete</br>";
                 remove(http.rawURLDecode(tpath).c_str());
             }
             else{
@@ -41,7 +41,7 @@ int main()
         http.output << "<h1 align=\"center\">----------------------------------------------</h1>";
         http.output << "<h3>" << entry.path() << "</h3>";
         http.output << "<form enctype=\"application/x-www-form-urlencoded\" method=\"post\"><input name=\"delete\" value="; 
-        http.output << entry.path() << " hidden=\"hidden\"><input type=\"submit\" value=\"Delete\"></form>";
+        http.output << entry.path() << " hidden=\"hidden\"><input type=\"submit\" value=\"удалить\"></form>";
         pathVector[entry.path()] = 1;
         SendFile(http,entry.path());
     }

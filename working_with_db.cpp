@@ -29,18 +29,17 @@ int main()
         http.setCookie("get", GetP);
         std::string res = db.read_one(GetP);
         if (res != ""){
-            std::string outStr_New_01 = "<table><tr><th>Key</th><th>Value</th><th>Delete</th></tr>";
+            std::string outStr_New_01 = "<table><tr><th>Ключ</th><th>Значение</th><th>Удаление</th></tr>";
             std::string outStr_New_02 = "<td>" + http.replaceEscapeSymbols(GetP) + "</td><td>" + http.replaceEscapeSymbols(res) + "</td>";
-            //тут я мудрил, пока не отдебажил, хотел добавить кнопку удаления при выводе одной записи
             std::string outStr_New_03 = "<td><form enctype=\"application/x-www-form-urlencoded\" method=\"post\"><input name=\"erase\" value=\""; 
-            std::string outStr_New_04 = GetP + "\" hidden=\"hidden\"><input type=\"submit\" value=\"Delete this line\"></form></td></tr></table>";
+            std::string outStr_New_04 = GetP + "\" hidden=\"hidden\"><input type=\"submit\" value=\"Удалить\"></form></td></tr></table>";
             http.output << outStr_New_01 + outStr_New_02 + outStr_New_03 + outStr_New_04;
         }
     }
     if (AllP != ""){
         std::map<std::string, std::string> *res = db.read_all();
         int i = 0;
-        std::string outStr_New_01 = "<table><tr><th>Key</th><th>Value</th><th>Delete</th></tr>";
+        std::string outStr_New_01 = "<table><tr><th>Ключ</th><th>Значение</th><th>Удаление</th></tr>";
         http.output << outStr_New_01;
         for (auto [key, val] : *res){
             std::string outStr_New_02 = "<tr><td>" + http.replaceEscapeSymbols(key) + "</td><td>" + http.replaceEscapeSymbols(val) + "</td>";
@@ -50,7 +49,7 @@ int main()
             i++;
             http.output << "<td><form enctype=\"application/x-www-form-urlencoded\" method=\"post\"><input id=\"keyinpgetall\" name=\"erase\" value=\"";
             http.output << key;
-            http.output << "\" hidden=\"hidden\"><input type=\"submit\" value=\"Delete this line\"></form></td></tr>";
+            http.output << "\" hidden=\"hidden\"><input type=\"submit\" value=\"Удалить\"></form></td></tr>";
         }
         http.output << "</table>";
     }

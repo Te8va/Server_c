@@ -13,23 +13,23 @@
 	<a href="./">Наверх</a>
     <p>Добавьте ключ и значение для DB</p>
     <form action="db.cgi" id="AddForm" enctype="application/x-www-form-urlencoded" method="post">
-        <label for="keyinpset">Key:</label>
+        <label for="keyinpset">Ключ:</label>
         <input id="keyinpset" name="set">
-        <label for="valinp">Value:</label>
+        <label for="valinp">Значение:</label>
         <input id="valinp" name="value">
         <input type="submit" value="добавить">
     </form>
-    <p>Get all from db</p>
+    <p>Просмотр списка</p>
     <form action="db.cgi" id="AddForm" enctype="application/x-www-form-urlencoded" method="get">
         <input id="keyinpgetall" name="getall" value="true" hidden="hidden">
-        <input type="submit" value="Get">
+        <input type="submit" value="Просмотр">
     </form>
-    <p>Get one key from db</p>
+    <p>Просмотр одной записи</p>
     <form action="db.cgi" id="AddForm" enctype="application/x-www-form-urlencoded" method="get">
         <input class="inp" id="keyinpget" name="get">
-        <input type="submit" value="Get">
+        <input type="submit" value="Просмотр">
     </form>
     <p id="status"></p>
-    <p id="result">result:</p>
+    <p id="result">Результат:</p>
 </body>
 </html>
