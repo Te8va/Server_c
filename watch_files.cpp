@@ -30,7 +30,7 @@ int main()
     if(http.httpPost("delete") != ""){
             fs::path tpath = fs::path(http.httpPost("delete"));
             if (pathVector[http.rawURLDecode(tpath)] == 1){
-                http.output << "</br>File "<< http.rawURLDecode(tpath) <<"delete</br>";
+                http.output << "</br>File "<< http.rawURLDecode(tpath) <<" deleted</br>";
                 remove(http.rawURLDecode(tpath).c_str());
             }
             else{

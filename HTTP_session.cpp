@@ -25,19 +25,20 @@ HTTP_session::HTTP_session() : HTTP(){
     }else{
         session.set_sessionID(sessionID);
     }
-    if(this->httpPost("login") != ""){
-      http.setCookie("login", login);  
+    // if(this->httpPost("login") != ""){
+    //   http.setCookie("login", login);  
 
 /*        http.setCookie("get", GetP);
         std::string res = db.read_one(GetP);
 */
-    }
+    // }
     
-    if(this->httpGet("logout") == "true"){
-        this->setCookie("session","");
-    }
-
+    // if(this->httpGet("logout") == "true"){
+    //     this->setCookie("session","");
+    // }
 }
+
+
 HTTP_session::~HTTP_session(){}
 
 

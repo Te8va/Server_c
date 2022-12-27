@@ -217,7 +217,7 @@ int HTTP::httpSendFile(std::string name){
 HTTP::~HTTP(){
     return;
 }
-// Декодирование "application/x-www-form-urlencoded" в нормальный вид
+
 std::string HTTP::rawURLDecode(std::string str)
 {
   std::string res = "";

@@ -24,8 +24,8 @@ int main()
     cpp_redis::client rclient;
     rclient.connect();
     rclient.set("hello", "45");
-    std::stringstream buf;
-    vector<string> rics;
+    // std::stringstream buf;
+    // vector<string> rics;
     // rclient.get("hello", [&buf](cpp_redis::reply& reply) mutable {
     // rclient.get("hello", [&rics](cpp_redis::reply& reply){
     rclient.get("hello", [&http](cpp_redis::reply& reply) mutable {
